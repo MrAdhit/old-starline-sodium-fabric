@@ -45,7 +45,7 @@ public class SodiumGameOptionPages {
                 .add(OptionImpl.createBuilder(int.class, vanillaOpts)
                         .setName(new TranslatableText("options.iris.shadowDistance"))
                         .setTooltip(new TranslatableText("options.iris.shadowDistance.sodium_tooltip"))
-                        .setControl(option -> new SliderControl(option, 0, 32, 1, ControlValueFormatter.quantity("Chunks")))
+                        .setControl(option -> new SliderControl(option, 0, 32, 1, ControlValueFormatter.translateVariable("options.chunks")))
                         .setBinding((options, value) -> IrisVideoSettings.shadowDistance = value,
                                 options -> IrisVideoSettings.getOverriddenShadowDistance(IrisVideoSettings.shadowDistance))
                         .setImpact(OptionImpact.HIGH)
