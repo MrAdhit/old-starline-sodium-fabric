@@ -5,7 +5,6 @@ import me.jellysquid.mods.sodium.client.SodiumClientMod;
 import me.jellysquid.mods.sodium.client.gl.GlObject;
 import me.jellysquid.mods.sodium.client.gl.shader.uniform.GlUniform;
 import me.jellysquid.mods.sodium.client.gl.shader.uniform.GlUniformBlock;
-import me.jellysquid.mods.sodium.client.render.chunk.shader.ChunkShaderInterface;
 import me.jellysquid.mods.sodium.client.render.chunk.shader.ShaderBindingContext;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
@@ -134,7 +133,7 @@ public class GlProgram<T> extends GlObject implements ShaderBindingContext {
         }
     }
 
-    public interface ProgramFactory<P extends GlProgram> {
+    public interface ProgramFactory<P extends GlProgram<?>> {
         P create(int handle);
     }
 }
