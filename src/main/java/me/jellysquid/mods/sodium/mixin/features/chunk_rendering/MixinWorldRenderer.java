@@ -12,10 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -25,6 +22,10 @@ import java.util.SortedSet;
 
 @Mixin(WorldRenderer.class)
 public abstract class MixinWorldRenderer implements WorldRendererExtended {
+    // This is a replacement for the frame field which was removed in 21w37a, not sure how Mojang replaced it.
+    @Unique
+    private int frame;
+
     @Shadow
     @Final
     private BufferBuilderStorage bufferBuilders;
@@ -46,7 +47,7 @@ public abstract class MixinWorldRenderer implements WorldRendererExtended {
         return renderer;
     }
 
-    @Redirect(method = "reload()V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/option/GameOptions;viewDistance:I", ordinal = 1))
+    @Redirect(method = "reload()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;getViewDistance()I", ordinal = 1))
     private int nullifyBuiltChunkStorage(GameOptions options) {
         // Do not allow any resources to be allocated
         return 0;
@@ -111,8 +112,9 @@ public abstract class MixinWorldRenderer implements WorldRendererExtended {
      * @author JellySquid
      */
     @Overwrite
-    private void setupTerrain(Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator) {
+    private void setupTerrain(Camera camera, Frustum frustum, boolean hasForcedFrustum, boolean spectator) {
         RenderDevice.enterManagedCode();
+        frame++;
 
         try {
             this.renderer.updateChunks(camera, frustum, hasForcedFrustum, frame, spectator);
