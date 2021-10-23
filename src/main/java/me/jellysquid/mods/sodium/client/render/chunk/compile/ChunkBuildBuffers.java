@@ -20,7 +20,6 @@ import net.coderbot.iris.shaderpack.IdMap;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.math.Vec3i;
 
 import java.util.Arrays;
 import java.util.EnumMap;
