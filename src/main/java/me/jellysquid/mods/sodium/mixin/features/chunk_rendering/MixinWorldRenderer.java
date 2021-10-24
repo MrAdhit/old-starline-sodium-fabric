@@ -36,6 +36,10 @@ public abstract class MixinWorldRenderer implements WorldRendererExtended {
 
     private SodiumWorldRenderer renderer;
 
+    // needsTerrainUpdate
+    @Shadow
+    private boolean field_34810;
+
     @Override
     public SodiumWorldRenderer getSodiumWorldRenderer() {
         return renderer;
@@ -122,6 +126,9 @@ public abstract class MixinWorldRenderer implements WorldRendererExtended {
                     this.renderer.updateChunks(camera, frustum, hasForcedFrustum, this.frame++, spectator);
                     this.renderer.getRenderSectionManager().updateAllChunksNow();
                 }
+
+                // We set this because third-party mods may use it (to loop themselves), even if Vanilla does not.
+                this.field_34810 = false;
             }
         } finally {
             RenderDevice.exitManagedCode();
