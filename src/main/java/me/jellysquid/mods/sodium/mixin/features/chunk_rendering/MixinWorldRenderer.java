@@ -34,12 +34,6 @@ public abstract class MixinWorldRenderer implements WorldRendererExtended {
     @Final
     private Long2ObjectMap<SortedSet<BlockBreakingInfo>> blockBreakingProgressions;
 
-    @Shadow
-    private int frame;
-
-    @Shadow
-    private boolean needsTerrainUpdate;
-
     private SodiumWorldRenderer renderer;
 
     @Override
@@ -128,9 +122,6 @@ public abstract class MixinWorldRenderer implements WorldRendererExtended {
                     this.renderer.updateChunks(camera, frustum, hasForcedFrustum, this.frame++, spectator);
                     this.renderer.getRenderSectionManager().updateAllChunksNow();
                 }
-
-                // We set this because third-party mods may use it (to loop themselves), even if Vanilla does not.
-                this.needsTerrainUpdate = false;
             }
         } finally {
             RenderDevice.exitManagedCode();
