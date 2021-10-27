@@ -215,12 +215,12 @@ public class RegionChunkRenderer extends ShaderChunkRenderer {
         float y = getCameraTranslation(region.getOriginY(), camera.blockY, camera.deltaY);
         float z = getCameraTranslation(region.getOriginZ(), camera.blockZ, camera.deltaZ);
 
-        Matrix4f modelViewMatrix = matrixStack.peek().getModel().copy();
+        Matrix4f modelViewMatrix = matrixStack.peek().getPositionMatrix().copy();
         modelViewMatrix.multiplyByTranslation(x, y, z);
         Matrix4f modelViewProjectionMatrix = RenderSystem.getProjectionMatrix().copy();
-        modelViewProjectionMatrix.multiply(matrixStack.peek().getModel());
+        modelViewProjectionMatrix.multiply(matrixStack.peek().getPositionMatrix());
         modelViewProjectionMatrix.multiplyByTranslation(x, y, z);
-        Matrix4f normalMatrix = matrixStack.peek().getModel().copy();
+        Matrix4f normalMatrix = matrixStack.peek().getPositionMatrix().copy();
         normalMatrix.multiplyByTranslation(x, y, z);
         normalMatrix.invert();
         normalMatrix.transpose();
