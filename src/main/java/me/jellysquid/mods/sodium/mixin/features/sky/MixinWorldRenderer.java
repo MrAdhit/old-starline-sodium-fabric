@@ -43,7 +43,7 @@ public class MixinWorldRenderer {
      * <p>When updating Sodium to new releases of the game, please check for new
      * ways the fog can be reduced in {@link BackgroundRenderer#applyFog(Camera, BackgroundRenderer.FogType, float, boolean)}}.</p>
      */
-    @Inject(method = "renderSky", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/math/Matrix4f;FLjava/lang/Runnable;)V", at = @At("HEAD"), cancellable = true)
     private void preRenderSky(MatrixStack matrices, Matrix4f matrix4f, float tickDelta, Runnable runnable, CallbackInfo callbackInfo) {
         if (!Iris.getCurrentPack().isPresent()) {
             Camera camera = this.client.gameRenderer.getCamera();
