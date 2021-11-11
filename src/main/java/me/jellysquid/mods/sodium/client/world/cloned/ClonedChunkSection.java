@@ -45,6 +45,8 @@ public class ClonedChunkSection {
 
     private PalettedContainer<Biome> biomeData;
 
+    private World world;
+
     ClonedChunkSection(ClonedChunkSectionCache backingCache) {
         this.backingCache = backingCache;
         this.blockEntities = new Short2ObjectOpenHashMap<>();
@@ -53,6 +55,7 @@ public class ClonedChunkSection {
     }
 
     public void init(World world, ChunkSectionPos pos) {
+        this.world = world;
         WorldChunk chunk = world.getChunk(pos.getX(), pos.getZ());
 
         if (chunk == null) {
@@ -113,7 +116,8 @@ public class ClonedChunkSection {
             return array.get(x, y, z);
         }
 
-        return 0;
+        // TODO: This is a hack to get around the "dark chunk" issue while a proper fix is being worked on.
+        return world.getLightLevel(type, new BlockPos.Mutable().set(x, y, z));
     }
 
     private void copyBlockEntities(WorldChunk chunk, ChunkSectionPos chunkCoord) {
