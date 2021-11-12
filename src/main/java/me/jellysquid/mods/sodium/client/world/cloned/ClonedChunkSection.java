@@ -10,6 +10,8 @@ import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.collection.EmptyPaletteStorage;
 import net.minecraft.util.collection.PackedIntegerArray;
 import net.minecraft.util.collection.PaletteStorage;
@@ -116,8 +118,13 @@ public class ClonedChunkSection {
             return array.get(x, y, z);
         }
 
+        world.getLightingProvider().enqueueSectionData(type, pos, new ChunkNibbleArray(), false);
+        copyLightData(world);
+
+        ChunkNibbleArray array2 = this.lightDataArrays[type.ordinal()];
+
         // TODO: This is a hack to get around the "dark chunk" issue while a proper fix is being worked on.
-        return world.getLightLevel(type, new BlockPos.Mutable().set(x, y, z));
+        return array2.get(x, y, z);
     }
 
     private void copyBlockEntities(WorldChunk chunk, ChunkSectionPos chunkCoord) {
